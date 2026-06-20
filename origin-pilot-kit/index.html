@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ORIGIN PILOT KIT · 검증엔진</title>
+  <meta name="description" content="원천 IP를 실제 검증 가설, 실험 설계, 사용자 증거, 다음 의사결정으로 바꾸는 GitHub Pages 호환 검증엔진">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">ORIGIN PILOT KIT</p>
+        <h1>생성 도구가 아니라 <span>검증엔진</span></h1>
+        <p class="hero-copy">이 앱은 IP를 예쁘게 설명하는 데서 멈추지 않습니다. 원천 IP를 <strong>검증 가설</strong>, <strong>실험 프로토콜</strong>, <strong>응답 로그</strong>, <strong>GO / ITERATE / PIVOT / STOP 판단</strong>으로 바꿉니다.</p>
+      </div>
+      <div class="hero-actions">
+        <button id="load-saju" class="ghost">사주보이즈 샘플</button>
+        <button id="load-performance" class="ghost">공연형 샘플</button>
+        <button id="generate" class="primary">검증엔진 실행</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel panel-brief">
+        <div class="panel-head">
+          <h2>1. IP 브리프 입력</h2>
+          <p>AI가 성공을 보증하는 게 아니라, 무엇을 사람에게 물어봐야 하는지 결정하는 입력부입니다.</p>
+        </div>
+        <div class="form-grid">
+          <label>
+            <span>IP 제목</span>
+            <input id="title" type="text" placeholder="예: 사주보이즈">
+          </label>
+          <label>
+            <span>형태</span>
+            <select id="format">
+              <option value="character">관계형 캐릭터 IP</option>
+              <option value="audio">오디오 드라마 / 팟캐스트</option>
+              <option value="performance">공연 / 전시 / 체험형</option>
+              <option value="video">숏폼 / 영상 IP</option>
+              <option value="education">교육 / 워크숍 IP</option>
+            </select>
+          </label>
+          <label class="full">
+            <span>한 줄 설명</span>
+            <textarea id="oneLiner" rows="2" placeholder="예: 사주 기반 K-pop 수호 캐릭터가 매일 짧은 메시지로 사용자를 지켜봐주는 관계형 IP"></textarea>
+          </label>
+          <label class="full">
+            <span>타깃 사용자</span>
+            <textarea id="audience" rows="2" placeholder="예: 18~35세 여성, K-pop 팬덤, 운세/위안 콘텐츠 소비자"></textarea>
+          </label>
+          <label class="full">
+            <span>지금 해결하려는 문제</span>
+            <textarea id="problem" rows="3" placeholder="예: 기존 운세 앱은 정보는 주지만 나를 기억하고 지켜봐주는 존재감은 약하다"></textarea>
+          </label>
+          <label class="full">
+            <span>핵심 약속 / 경험 가치</span>
+            <textarea id="promise" rows="3" placeholder="예: 사용자는 예측 정보를 받는 것이 아니라 자기 편이 되어주는 캐릭터와의 관계를 경험한다"></textarea>
+          </label>
+          <label>
+            <span>기억되길 바라는 감정</span>
+            <input id="emotion" type="text" placeholder="예: 위로, 기대, 보호받는 느낌">
+          </label>
+          <label>
+            <span>행동 목표</span>
+            <select id="businessGoal">
+              <option value="return">내일 다시 돌아오게 만들기</option>
+              <option value="signup">사전등록 / 구독 전환</option>
+              <option value="ticket">공연/이벤트 참여 의향</option>
+              <option value="share">공유 / 추천 유도</option>
+            </select>
+          </label>
+          <label class="full">
+            <span>가장 큰 리스크</span>
+            <textarea id="risks" rows="2" placeholder="예: 운세 서비스처럼 보이면 진부해질 수 있다 / 세계관이 넓고 캐릭터 관계는 얕아질 수 있다"></textarea>
+          </label>
+          <label class="full">
+            <span>비교 대상</span>
+            <textarea id="comparison" rows="2" placeholder="예: 기존 운세 앱, 캐릭터 챗봇, 오디오 드라마"></textarea>
+          </label>
+        </div>
+      </section>
+
+      <section class="panel panel-output">
+        <div class="panel-head sticky-head">
+          <div>
+            <h2>2. 검증 설계 결과</h2>
+            <p id="status">샘플을 불러오거나 직접 입력한 뒤 <strong>검증엔진 실행</strong>을 누르세요.</p>
+          </div>
+          <div class="toolbar">
+            <button id="save-md" class="ghost small">Markdown 저장</button>
+            <button id="export-json" class="ghost small">JSON 내보내기</button>
+            <label class="ghost small upload-label">
+              JSON 불러오기
+              <input id="import-json" type="file" accept="application/json">
+            </label>
+            <button id="reset" class="ghost small danger">초기화</button>
+          </div>
+        </div>
+
+        <div class="tabs">
+          <button class="tab active" data-tab="hypotheses">검증 가설</button>
+          <button class="tab" data-tab="experiments">실험 설계</button>
+          <button class="tab" data-tab="evidence">응답 로그</button>
+          <button class="tab" data-tab="decision">판단 대시보드</button>
+        </div>
+
+        <section class="tab-panel active" id="tab-hypotheses">
+          <div class="summary-card" id="summary-card"></div>
+          <div id="hypothesis-list" class="stack"></div>
+        </section>
+
+        <section class="tab-panel" id="tab-experiments">
+          <div id="experiment-list" class="stack"></div>
+        </section>
+
+        <section class="tab-panel" id="tab-evidence">
+          <div class="evidence-entry card">
+            <h3>응답 추가</h3>
+            <div class="form-grid evidence-grid">
+              <label>
+                <span>프로토타입 형태</span>
+                <select id="resp-prototype">
+                  <option value="audio">오디오</option>
+                  <option value="video">영상</option>
+                  <option value="character">캐릭터 메시지</option>
+                  <option value="performance">공연/체험</option>
+                </select>
+              </label>
+              <label>
+                <span>응답자 유형</span>
+                <input id="resp-participant" type="text" placeholder="예: K-pop 팬 / 공연 관객 / 동료 개발자">
+              </label>
+              <label>
+                <span>무엇으로 느꼈나</span>
+                <select id="resp-mode">
+                  <option value="relationship">관계 / 만남</option>
+                  <option value="information">정보 / 기능</option>
+                  <option value="experience">경험 / 장면</option>
+                  <option value="unclear">잘 모르겠음</option>
+                </select>
+              </label>
+              <label>
+                <span>다음 행동 의향</span>
+                <select id="resp-next">
+                  <option value="yes">있음</option>
+                  <option value="maybe">보통</option>
+                  <option value="no">없음</option>
+                </select>
+              </label>
+              <label>
+                <span>명확성 (1~5)</span>
+                <input id="resp-clarity" type="number" min="1" max="5" value="4">
+              </label>
+              <label>
+                <span>끌림 (1~5)</span>
+                <input id="resp-intrigue" type="number" min="1" max="5" value="4">
+              </label>
+              <label>
+                <span>차별감 (1~5)</span>
+                <input id="resp-diff" type="number" min="1" max="5" value="4">
+              </label>
+              <label>
+                <span>비용/구독 의향</span>
+                <select id="resp-pay">
+                  <option value="maybe">모름</option>
+                  <option value="yes">있음</option>
+                  <option value="no">없음</option>
+                </select>
+              </label>
+              <label class="full">
+                <span>가장 기억난 것</span>
+                <input id="resp-memory" type="text" placeholder="예: 캐릭터가 나를 알아봐주는 느낌 / 마지막 한 문장 / 열쇠 오브제">
+              </label>
+              <label class="full">
+                <span>자유 메모</span>
+                <textarea id="resp-comment" rows="3" placeholder="예: 운세앱 같지는 않았지만 세계관이 길게 설명되면 부담스러움"></textarea>
+              </label>
+            </div>
+            <button id="add-response" class="primary small">응답 추가</button>
+          </div>
+          <div id="response-list" class="stack"></div>
+        </section>
+
+        <section class="tab-panel" id="tab-decision">
+          <div id="decision-board" class="stack"></div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
