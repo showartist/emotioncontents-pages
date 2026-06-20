@@ -4,29 +4,29 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ORIGIN PILOT KIT · 검증엔진</title>
-  <meta name="description" content="원천 IP를 실제 검증 가설, 실험 설계, 사용자 증거, 다음 의사결정으로 바꾸는 GitHub Pages 호환 검증엔진">
+  <meta name="description" content="원천 IP를 실제 검증 가설, 실험 설계, 응답자 테스트 링크, 증거 수집, 의사결정으로 바꾸는 GitHub Pages 호환 검증엔진">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="shell">
+  <div id="admin-app" class="shell">
     <header class="hero">
       <div>
         <p class="eyebrow">ORIGIN PILOT KIT</p>
-        <h1>생성 도구가 아니라 <span>검증엔진</span></h1>
-        <p class="hero-copy">이 앱은 IP를 예쁘게 설명하는 데서 멈추지 않습니다. 원천 IP를 <strong>검증 가설</strong>, <strong>실험 프로토콜</strong>, <strong>응답 로그</strong>, <strong>GO / ITERATE / PIVOT / STOP 판단</strong>으로 바꿉니다.</p>
+        <h1>생성 도구가 아니라 <span>실제 검증엔진</span></h1>
+        <p class="hero-copy">이 버전은 단순 아이디어 생성기로 끝나지 않습니다. <strong>운영자 프로젝트</strong>를 만들고, <strong>응답자용 테스트 링크</strong>를 생성하고, 돌아온 <strong>응답 패키지</strong>를 흡수해 <strong>GO / ITERATE / PIVOT / STOP</strong> 판단까지 이어집니다.</p>
       </div>
       <div class="hero-actions">
         <button id="load-saju" class="ghost">사주보이즈 샘플</button>
         <button id="load-performance" class="ghost">공연형 샘플</button>
-        <button id="generate" class="primary">검증엔진 실행</button>
+        <button id="generate" class="primary">검증 프로젝트 생성</button>
       </div>
     </header>
 
     <main class="layout">
       <section class="panel panel-brief">
         <div class="panel-head">
-          <h2>1. IP 브리프 입력</h2>
-          <p>AI가 성공을 보증하는 게 아니라, 무엇을 사람에게 물어봐야 하는지 결정하는 입력부입니다.</p>
+          <h2>1. 운영자 브리프</h2>
+          <p>검증엔진은 “무엇을 물어볼지”와 “어떤 증거가 쌓여야 움직일지”를 먼저 고정합니다.</p>
         </div>
         <div class="form-grid">
           <label>
@@ -49,7 +49,7 @@
           </label>
           <label class="full">
             <span>타깃 사용자</span>
-            <textarea id="audience" rows="2" placeholder="예: 18~35세 여성, K-pop 팬덤, 운세/위안 콘텐츠 소비자"></textarea>
+            <textarea id="audience" rows="2" placeholder="예: 18~35세 여성, K-pop 팬덤, 위로/자기확인 콘텐츠 소비자"></textarea>
           </label>
           <label class="full">
             <span>지금 해결하려는 문제</span>
@@ -86,16 +86,13 @@
       <section class="panel panel-output">
         <div class="panel-head sticky-head">
           <div>
-            <h2>2. 검증 설계 결과</h2>
-            <p id="status">샘플을 불러오거나 직접 입력한 뒤 <strong>검증엔진 실행</strong>을 누르세요.</p>
+            <h2>2. 검증 운영 대시보드</h2>
+            <p id="status">샘플을 불러오거나 직접 입력한 뒤 <strong>검증 프로젝트 생성</strong>을 누르세요.</p>
           </div>
           <div class="toolbar">
             <button id="save-md" class="ghost small">Markdown 저장</button>
-            <button id="export-json" class="ghost small">JSON 내보내기</button>
-            <label class="ghost small upload-label">
-              JSON 불러오기
-              <input id="import-json" type="file" accept="application/json">
-            </label>
+            <button id="export-json" class="ghost small">프로젝트 JSON</button>
+            <label class="ghost small upload-label">프로젝트 불러오기<input id="import-json" type="file" accept="application/json"></label>
             <button id="reset" class="ghost small danger">초기화</button>
           </div>
         </div>
@@ -103,7 +100,8 @@
         <div class="tabs">
           <button class="tab active" data-tab="hypotheses">검증 가설</button>
           <button class="tab" data-tab="experiments">실험 설계</button>
-          <button class="tab" data-tab="evidence">응답 로그</button>
+          <button class="tab" data-tab="share">응답자 테스트</button>
+          <button class="tab" data-tab="evidence">증거 수집</button>
           <button class="tab" data-tab="decision">판단 대시보드</button>
         </div>
 
@@ -116,9 +114,65 @@
           <div id="experiment-list" class="stack"></div>
         </section>
 
+        <section class="tab-panel" id="tab-share">
+          <div class="card stack">
+            <div>
+              <h3>응답자용 테스트 링크 생성</h3>
+              <p class="muted">운영자가 실험용 자극을 만든 뒤, 외부 응답자에게 링크를 보내 실제 반응을 수집합니다.</p>
+            </div>
+            <div class="form-grid">
+              <label>
+                <span>테스트 이름</span>
+                <input id="run-name" type="text" placeholder="예: 사주보이즈 1차 첫인상 테스트">
+              </label>
+              <label>
+                <span>테스트 자극 형태</span>
+                <select id="run-prototype">
+                  <option value="audio">오디오</option>
+                  <option value="video">영상</option>
+                  <option value="character">캐릭터 메시지</option>
+                  <option value="performance">공연/체험</option>
+                </select>
+              </label>
+              <label class="full">
+                <span>응답자에게 보여줄 설명</span>
+                <textarea id="run-summary" rows="3" placeholder="예: 아래 캐릭터 첫 메시지를 읽고, 이것이 정보형 서비스처럼 느껴졌는지 관계형 만남처럼 느껴졌는지 답해주세요."></textarea>
+              </label>
+              <label class="full">
+                <span>실제 자극 본문 / 대사 / 체험 안내</span>
+                <textarea id="run-stimulus" rows="7" placeholder="예: [오늘의 수호자] 오늘 네가 피한 선택을 나는 알고 있어. 맞히러 온 게 아니라, 네 편이 되러 왔어."></textarea>
+              </label>
+            </div>
+            <div class="toolbar left-tools">
+              <button id="build-run-link" class="primary small">응답자 링크 생성</button>
+              <button id="copy-run-link" class="ghost small">링크 복사</button>
+              <button id="open-run-link" class="ghost small">새 창으로 열기</button>
+            </div>
+            <label>
+              <span>생성된 링크</span>
+              <textarea id="run-link" rows="3" readonly placeholder="링크 생성 후 여기에 표시됩니다."></textarea>
+            </label>
+          </div>
+        </section>
+
         <section class="tab-panel" id="tab-evidence">
+          <div class="card stack">
+            <div>
+              <h3>응답 패키지 흡수</h3>
+              <p class="muted">응답자가 보낸 패키지 문자열 또는 JSON 파일을 가져와 증거로 쌓습니다.</p>
+            </div>
+            <label>
+              <span>응답 패키지 문자열 붙여넣기</span>
+              <textarea id="package-input" rows="6" placeholder="RESP1: 로 시작하는 응답 패키지를 붙여넣으세요."></textarea>
+            </label>
+            <div class="toolbar left-tools">
+              <button id="import-package" class="primary small">패키지 가져오기</button>
+              <label class="ghost small upload-label">응답 JSON 불러오기<input id="import-response-json" type="file" accept="application/json"></label>
+            </div>
+          </div>
+
           <div class="evidence-entry card">
-            <h3>응답 추가</h3>
+            <h3>수동 응답 추가</h3>
             <div class="form-grid evidence-grid">
               <label>
                 <span>프로토타입 형태</span>
@@ -179,7 +233,7 @@
                 <textarea id="resp-comment" rows="3" placeholder="예: 운세앱 같지는 않았지만 세계관이 길게 설명되면 부담스러움"></textarea>
               </label>
             </div>
-            <button id="add-response" class="primary small">응답 추가</button>
+            <button id="add-response" class="primary small">수동 응답 추가</button>
           </div>
           <div id="response-list" class="stack"></div>
         </section>
@@ -187,6 +241,102 @@
         <section class="tab-panel" id="tab-decision">
           <div id="decision-board" class="stack"></div>
         </section>
+      </section>
+    </main>
+  </div>
+
+  <div id="respondent-app" class="shell respondent-shell hidden">
+    <header class="hero respondent-hero">
+      <div>
+        <p class="eyebrow">RESPONDENT MODE</p>
+        <h1>응답자 테스트</h1>
+        <p class="hero-copy">아래 자극을 본 뒤, 느낀 그대로 답해주세요. 이 모드는 운영자의 검증 프로젝트에 들어갈 증거 패키지를 만듭니다.</p>
+      </div>
+    </header>
+
+    <main class="respondent-layout">
+      <section class="panel">
+        <div class="panel-head">
+          <h2 id="respondent-title">테스트 불러오는 중</h2>
+          <p id="respondent-summary">링크에 포함된 검증 세션을 읽는 중입니다.</p>
+        </div>
+        <article class="stimulus-card">
+          <h3>응답자에게 보여줄 자극</h3>
+          <p id="respondent-prototype-badge" class="muted"></p>
+          <pre id="respondent-stimulus" class="stimulus-pre"></pre>
+        </article>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>응답 입력</h2>
+          <p>응답이 끝나면 패키지를 복사해 운영자에게 전달하거나 JSON으로 저장하세요.</p>
+        </div>
+        <div class="form-grid evidence-grid">
+          <label>
+            <span>응답자 이름/별칭</span>
+            <input id="r-name" type="text" placeholder="예: 팬A / 관객 03">
+          </label>
+          <label>
+            <span>응답자 유형</span>
+            <input id="r-participant-type" type="text" placeholder="예: K-pop 팬 / 공연 관객">
+          </label>
+          <label>
+            <span>무엇으로 느꼈나</span>
+            <select id="r-mode">
+              <option value="relationship">관계 / 만남</option>
+              <option value="information">정보 / 기능</option>
+              <option value="experience">경험 / 장면</option>
+              <option value="unclear">잘 모르겠음</option>
+            </select>
+          </label>
+          <label>
+            <span>다음 행동 의향</span>
+            <select id="r-next">
+              <option value="yes">있음</option>
+              <option value="maybe">보통</option>
+              <option value="no">없음</option>
+            </select>
+          </label>
+          <label>
+            <span>명확성 (1~5)</span>
+            <input id="r-clarity" type="number" min="1" max="5" value="4">
+          </label>
+          <label>
+            <span>끌림 (1~5)</span>
+            <input id="r-intrigue" type="number" min="1" max="5" value="4">
+          </label>
+          <label>
+            <span>차별감 (1~5)</span>
+            <input id="r-diff" type="number" min="1" max="5" value="4">
+          </label>
+          <label>
+            <span>비용/구독/참여 의향</span>
+            <select id="r-pay">
+              <option value="maybe">모름</option>
+              <option value="yes">있음</option>
+              <option value="no">없음</option>
+            </select>
+          </label>
+          <label class="full">
+            <span>가장 기억난 것</span>
+            <input id="r-memory" type="text" placeholder="예: 마지막 문장 / 캐릭터의 말투 / 장면 전환">
+          </label>
+          <label class="full">
+            <span>자유 메모</span>
+            <textarea id="r-comment" rows="4" placeholder="예: 설명은 길지 않았는데 캐릭터 관계로 느껴졌다."></textarea>
+          </label>
+        </div>
+        <div class="toolbar left-tools">
+          <button id="r-build-package" class="primary small">응답 패키지 생성</button>
+          <button id="r-copy-package" class="ghost small">패키지 복사</button>
+          <button id="r-download-json" class="ghost small">응답 JSON 저장</button>
+        </div>
+        <label>
+          <span>응답 패키지</span>
+          <textarea id="r-package" rows="7" readonly placeholder="응답 패키지가 여기에 생성됩니다."></textarea>
+        </label>
+        <p id="respondent-status" class="muted"></p>
       </section>
     </main>
   </div>
